@@ -12,8 +12,8 @@
 
 - (id)initFromObject:(NSDictionary *)jsonObject publisher:(NSString *)publisher sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform;
 
+@property (readonly, copy) NSString *heading;
 @property (readonly, copy) NSString *caption;
-@property (readonly, copy) NSString *fullCaption;
 @property (readonly, copy) NSString *clickthroughLink;
 @property (readonly) int imageWidth;
 @property (readonly) int imageHeight;

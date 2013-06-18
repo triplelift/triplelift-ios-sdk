@@ -9,6 +9,7 @@
 #import "TripleLiftSponsoredImage.h"
 
 // private class constants
+static int const DEFAULT_WIDTH = 150;
 static NSString *const IMPRESSION_ENDPOINT = @"http://eb.3lift.com/mbi?id=%@&ii=%@&publisher=%@&&platform=%@";
 static NSString *const CLICKTHROUGH_ENDPOINT = @"http://eb.3lift.com/mbc?id=%@&ii=%@&publisher=%@&&platform=%@";
 static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&publisher=%@&&platform=%@&&st=%@";
@@ -18,15 +19,16 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     NSString *_publisher;
     NSString *_contentID;
     NSString *_platform;
+    
+    double _imageWidthOverHeight;
     NSString *_imageID;
-    NSString *_imageExtension;
     NSString *_adpinrImageURL;
+    NSString *_cvVersion;
     
     // encoded variables for url
     NSString *_encodedPublisher;
     NSString *_encodedContentID;
     NSString *_encodedPlatform;
-    NSString *_encodedImageID;
 }
 
 - (id)initFromObject:(NSDictionary *)jsonObject publisher:(NSString *)publisher sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform{
@@ -35,20 +37,30 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     _publisher = publisher;
     _contentID = contentID;
     _platform = platform;
-    _imageID = [jsonObject objectForKey:@"id"];
-    _imageExtension = [jsonObject objectForKey:@"extension"];
-    _imageWidth = [[jsonObject objectForKey:@"width"] intValue];
-    _imageHeight = [[jsonObject objectForKey:@"height"] intValue];
+    
+    _imageWidthOverHeight = [[jsonObject objectForKey:@"image_w_over_h"] doubleValue];
+    _imageWidth = DEFAULT_WIDTH;
+    _imageHeight = (_imageWidth / _imageWidthOverHeight);
+    
+    _heading = [jsonObject objectForKey:@"heading"];
     _caption = [jsonObject objectForKey:@"caption"];
-    _fullCaption = [jsonObject objectForKey:@"full_caption"];
     _clickthroughLink = [self urlDecode:[jsonObject objectForKey:@"link"]];
     
-    _adpinrImageURL = [NSString stringWithFormat:@"http://images.adpinr.com/%@%@",_imageID,_imageExtension];
+    _adpinrImageURL = [jsonObject objectForKey:@"image_url"];
+    
+    // get the image id from the adpinr url
+    NSURL *url = [NSURL URLWithString:_adpinrImageURL];
+    _imageID = [[[[[url path]
+                   componentsSeparatedByString:@"/"]
+                  lastObject]
+                 componentsSeparatedByString:@"."]
+                objectAtIndex:0];
+    
+    _cvVersion = [jsonObject objectForKey:@"cv_version"];
     
     _encodedPublisher = [self urlEncode:_publisher];
     _encodedContentID = [self urlEncode:_contentID];
     _encodedPlatform = [self urlEncode:_platform];
-    _encodedImageID = [self urlEncode:_imageID];
     
     return self;
 }
@@ -57,20 +69,20 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     return [self getImageURLWithWidth:self.imageWidth height:self.imageHeight];
 }
 - (NSString *)getImageURLWithWidth:(int)width {
-    int height = self.imageWidth * self.imageHeight / width;
+    int height = width / _imageWidthOverHeight;
     return [self getImageURLWithWidth:width height:height];
 }
 - (NSString *)getImageURLWithWidth:(int)width height:(int)height {
     NSString *encodedAdpinrURL = [self urlEncode:_adpinrImageURL];
     
-    return [NSString stringWithFormat:@"http://img.3lift.com/?width=%d&height=%d&url=%@",width,height,encodedAdpinrURL];
+    return [NSString stringWithFormat:@"http://img.3lift.com/?alt=tl&cv=%@&width=%d&height=%d&url=%@",_cvVersion,width,height,encodedAdpinrURL];
 }
 
 - (UIImage *)getImage {
     return [self getImageWithWidth:self.imageWidth height:self.imageHeight];
 }
 - (UIImage *)getImageWithWidth:(int)width {
-    int height = self.imageWidth * self.imageHeight / width;
+    int height = width / _imageWidthOverHeight;
     return [self getImageWithWidth:width height:height];
 }
 - (UIImage *)getImageWithWidth:(int)width height:(int)height {
@@ -86,7 +98,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     return [self logImpressionWithError:nil];
 }
 - (void)logImpressionWithError:(NSError **)errorPointer {
-    NSString *impressionURL = [NSString stringWithFormat:IMPRESSION_ENDPOINT,_encodedContentID,_encodedImageID,_encodedPublisher,_encodedPlatform];
+    NSString *impressionURL = [NSString stringWithFormat:IMPRESSION_ENDPOINT,_encodedContentID,_imageID,_encodedPublisher,_encodedPlatform];
     [self makeGenericRequest:impressionURL error:errorPointer];
     return;
 }
@@ -95,7 +107,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     return [self logClickthroughWithError:nil];
 }
 - (void)logClickthroughWithError:(NSError **)errorPointer {
-    NSString *clickthroughURL = [NSString stringWithFormat:CLICKTHROUGH_ENDPOINT,_encodedContentID,_encodedImageID,_encodedPublisher,_encodedPlatform];
+    NSString *clickthroughURL = [NSString stringWithFormat:CLICKTHROUGH_ENDPOINT,_encodedContentID,_imageID,_encodedPublisher,_encodedPlatform];
     [self makeGenericRequest:clickthroughURL error:errorPointer];
     return;
 }
@@ -105,7 +117,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
 }
 - (void)logEvent:(NSString *)eventName error:(NSError **)errorPointer {
     NSString *encodedEventName = [self urlEncode:eventName];
-    NSString *eventURL = [NSString stringWithFormat:EVENT_ENDPOINT,_encodedContentID,_encodedImageID,_encodedPublisher,_encodedPlatform,encodedEventName];
+    NSString *eventURL = [NSString stringWithFormat:EVENT_ENDPOINT,_encodedContentID,_imageID,_encodedPublisher,_encodedPlatform,encodedEventName];
     [self makeGenericRequest:eventURL error:errorPointer];
     return;
 }

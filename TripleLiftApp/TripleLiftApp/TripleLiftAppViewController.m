@@ -50,7 +50,7 @@
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             // set the text on the main thread
-            self.informationLabel.text = _sponsoredImage.fullCaption;
+            self.informationLabel.text = _sponsoredImage.caption;
             
             // load the actual image from the remote location
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

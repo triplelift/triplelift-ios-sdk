@@ -23,7 +23,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     // Create the sponsored image factory with tag code and publisher
-    _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithTagCode:@"defaultplacement_mobile" publisher:@"TripleLift Test App"];
+    _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"defaultplacement_mobile"];
     
     UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 150, 150)];
     [self.informationImage addSubview:imageHolder];

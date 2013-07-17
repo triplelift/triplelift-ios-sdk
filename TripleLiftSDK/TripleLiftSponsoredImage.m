@@ -10,13 +10,13 @@
 
 // private class constants
 static int const DEFAULT_WIDTH = 150;
-static NSString *const IMPRESSION_ENDPOINT = @"http://eb.3lift.com/mbi?id=%@&ii=%@&publisher=%@&&platform=%@";
-static NSString *const CLICKTHROUGH_ENDPOINT = @"http://eb.3lift.com/mbc?id=%@&ii=%@&publisher=%@&&platform=%@";
-static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&publisher=%@&&platform=%@&&st=%@";
+static NSString *const IMPRESSION_ENDPOINT = @"http://eb.3lift.com/mbi?id=%@&ii=%@&inv_code=%@&&platform=%@";
+static NSString *const CLICKTHROUGH_ENDPOINT = @"http://eb.3lift.com/mbc?id=%@&ii=%@&inv_code=%@&&platform=%@";
+static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&inv_code=%@&&platform=%@&&st=%@";
 
 @implementation TripleLiftSponsoredImage {
     // private instance variables
-    NSString *_publisher;
+    NSString *_inventoryCode;
     NSString *_contentID;
     NSString *_platform;
     
@@ -26,15 +26,15 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     NSString *_cvVersion;
     
     // encoded variables for url
-    NSString *_encodedPublisher;
+    NSString *_encodedInventoryCode;
     NSString *_encodedContentID;
     NSString *_encodedPlatform;
 }
 
-- (id)initFromObject:(NSDictionary *)jsonObject publisher:(NSString *)publisher sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform{
+- (id)initFromObject:(NSDictionary *)jsonObject inventoryCode:(NSString *)inventoryCode sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform{
     self = [super init];
     
-    _publisher = publisher;
+    _inventoryCode = inventoryCode;
     _contentID = contentID;
     _platform = platform;
     
@@ -58,7 +58,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     
     _cvVersion = [jsonObject objectForKey:@"cv_version"];
     
-    _encodedPublisher = [self urlEncode:_publisher];
+    _encodedInventoryCode = [self urlEncode:_inventoryCode];
     _encodedContentID = [self urlEncode:_contentID];
     _encodedPlatform = [self urlEncode:_platform];
     
@@ -87,6 +87,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
 }
 - (UIImage *)getImageWithWidth:(int)width height:(int)height {
     NSString *imageURL = [self getImageURLWithWidth:width height:height];
+    NSLog(@"Image Url: %@", imageURL);
     
     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageURL]];
     UIImage *image = [UIImage imageWithData:imageData];
@@ -98,7 +99,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     return [self logImpressionWithError:nil];
 }
 - (void)logImpressionWithError:(NSError **)errorPointer {
-    NSString *impressionURL = [NSString stringWithFormat:IMPRESSION_ENDPOINT,_encodedContentID,_imageID,_encodedPublisher,_encodedPlatform];
+    NSString *impressionURL = [NSString stringWithFormat:IMPRESSION_ENDPOINT,_encodedContentID,_imageID,_encodedInventoryCode,_encodedPlatform];
     [self makeGenericRequest:impressionURL error:errorPointer];
     return;
 }
@@ -107,7 +108,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
     return [self logClickthroughWithError:nil];
 }
 - (void)logClickthroughWithError:(NSError **)errorPointer {
-    NSString *clickthroughURL = [NSString stringWithFormat:CLICKTHROUGH_ENDPOINT,_encodedContentID,_imageID,_encodedPublisher,_encodedPlatform];
+    NSString *clickthroughURL = [NSString stringWithFormat:CLICKTHROUGH_ENDPOINT,_encodedContentID,_imageID,_encodedInventoryCode,_encodedPlatform];
     [self makeGenericRequest:clickthroughURL error:errorPointer];
     return;
 }
@@ -117,7 +118,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&pu
 }
 - (void)logEvent:(NSString *)eventName error:(NSError **)errorPointer {
     NSString *encodedEventName = [self urlEncode:eventName];
-    NSString *eventURL = [NSString stringWithFormat:EVENT_ENDPOINT,_encodedContentID,_imageID,_encodedPublisher,_encodedPlatform,encodedEventName];
+    NSString *eventURL = [NSString stringWithFormat:EVENT_ENDPOINT,_encodedContentID,_imageID,_encodedInventoryCode,_encodedPlatform,encodedEventName];
     [self makeGenericRequest:eventURL error:errorPointer];
     return;
 }

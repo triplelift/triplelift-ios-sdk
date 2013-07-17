@@ -10,7 +10,7 @@
 
 @interface TripleLiftSponsoredImage : NSObject
 
-- (id)initFromObject:(NSDictionary *)jsonObject publisher:(NSString *)publisher sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform;
+- (id)initFromObject:(NSDictionary *)jsonObject inventoryCode:(NSString *)inventoryCode sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform;
 
 @property (readonly, copy) NSString *heading;
 @property (readonly, copy) NSString *caption;

@@ -17,7 +17,7 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
     NSString *_appNexusAuctionEndpoint;
     NSString *_sponsoredImageEndpoint;
     // the publisher
-    NSString *_publisher;
+    NSString *_inventoryCode;
     // array of image objects
     NSArray *_sponsoredImages;
 }
@@ -25,11 +25,11 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
     self = [super init];
     return self;
 }
-- (id)initWithTagCode:(NSString *)tagCode publisher:(NSString *)publisher{
+- (id)initWithInventoryCode:(NSString *)inventoryCode{
     self = [super init];
     if(self) {
-        _appNexusAuctionEndpoint = [NSString stringWithFormat:AUCTION_ENDPOINT, tagCode];
-        _publisher = publisher;
+        _appNexusAuctionEndpoint = [NSString stringWithFormat:AUCTION_ENDPOINT, inventoryCode];
+        _inventoryCode = inventoryCode;
     }
         
     return self;
@@ -50,6 +50,8 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
     NSString *creativeCode = [[NSString alloc] initWithData:auctionData encoding:NSUTF8StringEncoding];
     
     _sponsoredImageEndpoint = [NSString stringWithFormat:SPONSORED_IMAGE_ENDPOINT, creativeCode];
+    _sponsoredImageEndpoint = @"http://sand-dynamic.3lift.com/sc/advertiser/json/192409";
+    
     // get the sponsored image data
     NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_sponsoredImageEndpoint]];
     NSURLResponse *sponsoredImageResponse = nil;
@@ -78,7 +80,7 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
         NSDictionary *imageDictionary = [_sponsoredImages objectAtIndex:arc4random_uniform([_sponsoredImages count])];
         
         TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:imageDictionary
-                                                                                          publisher:_publisher
+                                                                                      inventoryCode:_inventoryCode
                                                                                  sponsoredContentID:creativeCode
                                                                                      mobilePlatform:@"ios"];
         return sponsoredImage;

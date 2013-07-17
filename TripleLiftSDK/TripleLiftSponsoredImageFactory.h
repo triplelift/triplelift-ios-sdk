@@ -11,7 +11,7 @@
 
 @interface TripleLiftSponsoredImageFactory : NSObject
 
-- (id)initWithTagCode:(NSString *)tagCode publisher:(NSString *)publisher;
+- (id)initWithInventoryCode:(NSString *)inventoryCode;
 
 - (TripleLiftSponsoredImage *)getSponsoredImage;
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer;

@@ -1,1 +1,13 @@
 .DS_Store
+
+.Trashes
+
+*.swp
+
+*.lock
+
+DerivedData/
+
+build/
+
+xcuserdata

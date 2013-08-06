@@ -50,7 +50,6 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
     NSString *creativeCode = [[NSString alloc] initWithData:auctionData encoding:NSUTF8StringEncoding];
     
     _sponsoredImageEndpoint = [NSString stringWithFormat:SPONSORED_IMAGE_ENDPOINT, creativeCode];
-    _sponsoredImageEndpoint = @"http://sand-dynamic.3lift.com/sc/advertiser/json/192409";
     
     // get the sponsored image data
     NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_sponsoredImageEndpoint]];

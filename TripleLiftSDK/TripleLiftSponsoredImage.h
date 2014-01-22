@@ -14,7 +14,6 @@
 
 @property (readonly, copy) NSString *heading;
 @property (readonly, copy) NSString *caption;
-@property (readonly, copy) NSString *imgServerParams;
 @property (readonly, copy) NSString *clickthroughLink;
 @property (readonly) int imageWidth;
 @property (readonly) int imageHeight;

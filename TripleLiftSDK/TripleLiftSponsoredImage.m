@@ -24,6 +24,7 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&in
     NSString *_imageID;
     NSString *_adpinrImageURL;
     NSString *_cvVersion;
+    NSString *_imgServerParams;
     
     // encoded variables for url
     NSString *_encodedInventoryCode;
@@ -45,11 +46,11 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&in
     _heading = [jsonObject objectForKey:@"heading"];
     _caption = [jsonObject objectForKey:@"caption"];
     _clickthroughLink = [self urlDecode:[jsonObject objectForKey:@"link"]];
+    
     _imgServerParams = [jsonObject objectForKey:@"img_server_params"];
     if(_imgServerParams == nil) {
         _imgServerParams = @"";
     }
-    
     _adpinrImageURL = [jsonObject objectForKey:@"image_url"];
     
     // get the image id from the adpinr url

@@ -25,7 +25,7 @@
     // Create the sponsored image factory with tag code and publisher
     _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"defaultplacement_mobile"];
     
-    UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 150, 150)];
+    UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
     [self.informationImage addSubview:imageHolder];
     // add tap recognizer to capture taps on the image
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -54,7 +54,7 @@
             
             // load the actual image from the remote location
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                UIImage *image = [_sponsoredImage getImageWithWidth:150 height:150];
+                UIImage *image = [_sponsoredImage getImageWithWidth:200 height:200];
                 
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     // replace the image on the main thread

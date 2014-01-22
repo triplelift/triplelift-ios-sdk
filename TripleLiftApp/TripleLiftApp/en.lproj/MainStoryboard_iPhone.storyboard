@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <development version="4600" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
         <!--Triple Lift App View Controller-->
@@ -13,6 +15,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="247" text="" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="5DC-iO-ult">
+                                <rect key="frame" x="20" y="308" width="280" height="145"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="145" id="IhT-He-ajo"/>
                                 </constraints>
@@ -21,9 +24,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="center" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="mhb-Cb-ice">
+                                <rect key="frame" x="60" y="75" width="200" height="200"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fzm-lZ-BmB">
+                                <rect key="frame" x="233" y="461" width="67" height="67"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="Buttons2.gif">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -37,6 +42,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4mF-V7-Kgk">
+                                <rect key="frame" x="20" y="464" width="49" height="64"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="Buttons3.gif">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,6 +56,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GdZ-kE-Oku">
+                                <rect key="frame" x="124" y="464" width="72" height="64"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="Buttons1.gif">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -65,18 +72,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="5DC-iO-ult" firstAttribute="trailing" secondItem="fzm-lZ-BmB" secondAttribute="trailing" type="default" id="3SW-tR-zKf"/>
                             <constraint firstAttribute="trailing" secondItem="5DC-iO-ult" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="BWB-aU-biq"/>
-                            <constraint firstAttribute="bottom" secondItem="GdZ-kE-Oku" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="M03-P5-c8W"/>
-                            <constraint firstAttribute="bottom" secondItem="mhb-Cb-ice" secondAttribute="bottom" constant="348" id="PrU-7o-LB0"/>
+                            <constraint firstItem="mhb-Cb-ice" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="60" id="DSJ-1H-wtM"/>
+                            <constraint firstItem="5DC-iO-ult" firstAttribute="leading" secondItem="4mF-V7-Kgk" secondAttribute="leading" type="default" id="HU3-oF-h2f"/>
+                            <constraint firstItem="GdZ-kE-Oku" firstAttribute="bottom" secondItem="fzm-lZ-BmB" secondAttribute="bottom" type="default" id="HfM-1F-nQe"/>
+                            <constraint firstAttribute="bottom" secondItem="mhb-Cb-ice" secondAttribute="bottom" constant="273" id="MFD-RD-0PS"/>
+                            <constraint firstItem="mhb-Cb-ice" firstAttribute="centerX" secondItem="5DC-iO-ult" secondAttribute="centerX" type="default" id="MMa-3t-OfP"/>
                             <constraint firstItem="5DC-iO-ult" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="QRz-PA-FEi"/>
-                            <constraint firstItem="mhb-Cb-ice" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="85" id="Rzm-cA-2IA"/>
                             <constraint firstItem="GdZ-kE-Oku" firstAttribute="centerX" secondItem="5DC-iO-ult" secondAttribute="centerX" type="default" id="SlK-qq-swC"/>
-                            <constraint firstItem="mhb-Cb-ice" firstAttribute="top" secondItem="3" secondAttribute="top" constant="50" id="TAa-Ah-aYQ"/>
-                            <constraint firstItem="4mF-V7-Kgk" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Xko-iD-V66"/>
-                            <constraint firstAttribute="trailing" secondItem="fzm-lZ-BmB" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="bAK-ah-kjC"/>
                             <constraint firstAttribute="bottom" secondItem="4mF-V7-Kgk" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="fzG-jf-hzB"/>
-                            <constraint firstItem="mhb-Cb-ice" firstAttribute="centerX" secondItem="5DC-iO-ult" secondAttribute="centerX" type="default" id="kh4-HN-YhO"/>
-                            <constraint firstAttribute="bottom" secondItem="fzm-lZ-BmB" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="oHq-TT-lIY"/>
+                            <constraint firstItem="GdZ-kE-Oku" firstAttribute="top" secondItem="4mF-V7-Kgk" secondAttribute="top" type="default" id="giV-JO-pdG"/>
+                            <constraint firstItem="mhb-Cb-ice" firstAttribute="top" secondItem="3" secondAttribute="top" constant="75" id="vRI-6v-qNl"/>
                             <constraint firstItem="fzm-lZ-BmB" firstAttribute="top" secondItem="5DC-iO-ult" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="vc8-Pg-dOL"/>
                         </constraints>
                     </view>
@@ -97,24 +104,6 @@
         <image name="Buttons2.gif" width="67" height="67"/>
         <image name="Buttons3.gif" width="49" height="64"/>
     </resources>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="TripleLiftAppViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TripleLiftAppViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="likeButtonPressed:"/>
-                <relationship kind="action" name="refreshButtonPressed:"/>
-                <relationship kind="action" name="shareButtonPressed:"/>
-                <relationship kind="outlet" name="informationImage" candidateClass="UIView"/>
-                <relationship kind="outlet" name="informationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="likeButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="refreshButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="shareButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -8,104 +8,51 @@
 
 #import "TripleLiftSponsoredImage.h"
 
-// private class constants
-static int const DEFAULT_WIDTH = 150;
-static NSString *const IMPRESSION_ENDPOINT = @"http://eb.3lift.com/mbi?id=%@&ii=%@&inv_code=%@&&platform=%@";
-static NSString *const CLICKTHROUGH_ENDPOINT = @"http://eb.3lift.com/mbc?id=%@&ii=%@&inv_code=%@&&platform=%@";
-static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&inv_code=%@&&platform=%@&&st=%@";
-
 @implementation TripleLiftSponsoredImage {
-    // private instance variables
-    NSString *_inventoryCode;
-    NSString *_contentID;
-    NSString *_platform;
-    
-    double _imageWidthOverHeight;
-    NSString *_imageID;
-    NSString *_adpinrImageURL;
-    NSString *_cvVersion;
-    NSString *_imgServerParams;
-    
-    // encoded variables for url
-    NSString *_encodedInventoryCode;
-    NSString *_encodedContentID;
-    NSString *_encodedPlatform;
 }
 
-- (id)initFromObject:(NSDictionary *)jsonObject inventoryCode:(NSString *)inventoryCode sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform{
+- (id)initFromObject:(NSDictionary *)jsonObject mobilePlatform:(NSString *)platform{
     self = [super init];
     
-    _inventoryCode = inventoryCode;
-    _contentID = contentID;
-    _platform = platform;
-    
-    _imageWidthOverHeight = [[jsonObject objectForKey:@"image_w_over_h"] doubleValue];
-    _imageWidth = DEFAULT_WIDTH;
-    _imageHeight = (_imageWidth / _imageWidthOverHeight);
-    
+    _advertiser_name = [jsonObject objectForKey:@"advertiser_name"];
     _heading = [jsonObject objectForKey:@"heading"];
     _caption = [jsonObject objectForKey:@"caption"];
-    _clickthroughLink = [self urlDecode:[jsonObject objectForKey:@"link"]];
+    _clickthroughLink = [jsonObject objectForKey:@"clickthrough_link"];
     
-    _imgServerParams = [jsonObject objectForKey:@"img_server_params"];
-    if(_imgServerParams == nil) {
-        _imgServerParams = @"";
-    }
-    _adpinrImageURL = [jsonObject objectForKey:@"image_url"];
+    _imageUrl = [jsonObject objectForKey:@"image_url"];
+    _imageThumbnailUrl = [jsonObject objectForKey:@"image_thumbnail_url"];
     
-    // get the image id from the adpinr url
-    NSURL *url = [NSURL URLWithString:_adpinrImageURL];
-    _imageID = [[[[[url path]
-                   componentsSeparatedByString:@"/"]
-                  lastObject]
-                 componentsSeparatedByString:@"."]
-                objectAtIndex:0];
-    
-    _cvVersion = [jsonObject objectForKey:@"cv_version"];
-    
-    _encodedInventoryCode = [self urlEncode:_inventoryCode];
-    _encodedContentID = [self urlEncode:_contentID];
-    _encodedPlatform = [self urlEncode:_platform];
+    _impressionPixels = [jsonObject objectForKey:@"impression_pixels"];
+    _clickthroughPixels = [jsonObject objectForKey:@"clickthrough_pixels"];
+    _interactionPixels = [jsonObject objectForKey:@"_interaction_pixels"];
+    _sharePixels = [jsonObject objectForKey:@"_share_pixels"];
     
     return self;
 }
 
-- (NSString *)getImageURL {
-    return [self getImageURLWithWidth:self.imageWidth height:self.imageHeight];
-}
-- (NSString *)getImageURLWithWidth:(int)width {
-    int height = width / _imageWidthOverHeight;
-    return [self getImageURLWithWidth:width height:height];
-}
-- (NSString *)getImageURLWithWidth:(int)width height:(int)height {
-    NSString *encodedAdpinrURL = [self urlEncode:_adpinrImageURL];
-    
-    return [NSString stringWithFormat:@"http://img.3lift.com/?alt=tl&width=%d&height=%d&url=%@&%@",width,height,encodedAdpinrURL, _imgServerParams];
-}
-
 - (UIImage *)getImage {
-    return [self getImageWithWidth:self.imageWidth height:self.imageHeight];
+    return [self doGetImage:_imageUrl];
 }
-- (UIImage *)getImageWithWidth:(int)width {
-    int height = width / _imageWidthOverHeight;
-    return [self getImageWithWidth:width height:height];
+- (UIImage *)getImageThumbnail {
+    return [self doGetImage:_imageThumbnailUrl];
 }
-- (UIImage *)getImageWithWidth:(int)width height:(int)height {
-    NSString *imageURL = [self getImageURLWithWidth:width height:height];
-    NSLog(@"Image Url: %@", imageURL);
-    
-    NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageURL]];
+- (UIImage *)doGetImage:(NSString *)imageUrl {
+    NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageUrl]];
     UIImage *image = [UIImage imageWithData:imageData];
     
     return image;
+    
 }
 
 - (void)logImpression {
     return [self logImpressionWithError:nil];
 }
 - (void)logImpressionWithError:(NSError **)errorPointer {
-    NSString *impressionURL = [NSString stringWithFormat:IMPRESSION_ENDPOINT,_encodedContentID,_imageID,_encodedInventoryCode,_encodedPlatform];
-    [self makeGenericRequest:impressionURL error:errorPointer];
+    NSEnumerator *enumerator = [_impressionPixels objectEnumerator];
+    NSString *impressionURL;
+    while(impressionURL = [enumerator nextObject]) {
+        [self makeGenericRequest:impressionURL error:errorPointer];
+    }
     return;
 }
 
@@ -113,20 +60,38 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&in
     return [self logClickthroughWithError:nil];
 }
 - (void)logClickthroughWithError:(NSError **)errorPointer {
-    NSString *clickthroughURL = [NSString stringWithFormat:CLICKTHROUGH_ENDPOINT,_encodedContentID,_imageID,_encodedInventoryCode,_encodedPlatform];
-    [self makeGenericRequest:clickthroughURL error:errorPointer];
+    NSEnumerator *enumerator = [_clickthroughPixels objectEnumerator];
+    NSString *clickthroughURL;
+    while(clickthroughURL = [enumerator nextObject]) {
+        [self makeGenericRequest:clickthroughURL error:errorPointer];
+    }
     return;
 }
 
-- (void)logEvent:(NSString *)eventName {
-    return [self logEvent:eventName error:nil];
+- (void)logInteraction {
+    return [self logInteractionWithError:nil];
 }
-- (void)logEvent:(NSString *)eventName error:(NSError **)errorPointer {
-    NSString *encodedEventName = [self urlEncode:eventName];
-    NSString *eventURL = [NSString stringWithFormat:EVENT_ENDPOINT,_encodedContentID,_imageID,_encodedInventoryCode,_encodedPlatform,encodedEventName];
-    [self makeGenericRequest:eventURL error:errorPointer];
+- (void)logInteractionWithError:(NSError **)errorPointer {
+    NSEnumerator *enumerator = [_interactionPixels objectEnumerator];
+    NSString *interactionURL;
+    while(interactionURL = [enumerator nextObject]) {
+        [self makeGenericRequest:interactionURL error:errorPointer];
+    }
     return;
 }
+
+- (void)logShare {
+    return [self logShareWithError:nil];
+}
+- (void)logShareWithError:(NSError **)errorPointer {
+    NSEnumerator *enumerator = [_sharePixels objectEnumerator];
+    NSString *shareURL;
+    while(shareURL = [enumerator nextObject]) {
+        [self makeGenericRequest:shareURL error:errorPointer];
+    }
+    return;
+}
+
 
 // private functions
 - (NSString *)urlEncode:(NSString *)unencodedString {
@@ -136,6 +101,9 @@ static NSString *const EVENT_ENDPOINT = @"http://eb.3lift.com/mbs?id=%@&ii=%@&in
     return [encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 - (void)makeGenericRequest:(NSString *)url error:(NSError **)errorPointer {
+    // properly escape the urls before requesting
+    url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [NSURLConnection sendAsynchronousRequest:request queue:queue

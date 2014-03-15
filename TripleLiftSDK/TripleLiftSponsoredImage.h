@@ -10,21 +10,23 @@
 
 @interface TripleLiftSponsoredImage : NSObject
 
-- (id)initFromObject:(NSDictionary *)jsonObject inventoryCode:(NSString *)inventoryCode sponsoredContentID:(NSString *)contentID mobilePlatform:(NSString *)platform;
+- (id)initFromObject:(NSDictionary *)jsonObject mobilePlatform:(NSString *)platform;
 
+@property (readonly, copy) NSString *advertiser_name;
 @property (readonly, copy) NSString *heading;
 @property (readonly, copy) NSString *caption;
 @property (readonly, copy) NSString *clickthroughLink;
-@property (readonly) int imageWidth;
-@property (readonly) int imageHeight;
 
-- (NSString *)getImageURL;
-- (NSString *)getImageURLWithWidth:(int)width;
-- (NSString *)getImageURLWithWidth:(int)width height:(int)height;
+@property (readonly, copy) NSString *imageUrl;
+@property (readonly, copy) NSString *imageThumbnailUrl;
+
+@property (readonly, copy) NSArray *impressionPixels;
+@property (readonly, copy) NSArray *clickthroughPixels;
+@property (readonly, copy) NSArray *interactionPixels;
+@property (readonly, copy) NSArray *sharePixels;
 
 - (UIImage *)getImage;
-- (UIImage *)getImageWithWidth:(int)width;
-- (UIImage *)getImageWithWidth:(int)width height:(int)height;
+- (UIImage *)getImageThumbnail;
 
 - (void)logImpression;
 - (void)logImpressionWithError:(NSError **)errorPointer;
@@ -32,7 +34,11 @@
 - (void)logClickthrough;
 - (void)logClickthroughWithError:(NSError **)errorPointer;
 
-- (void)logEvent:(NSString *)eventName;
-- (void)logEvent:(NSString *)eventName error:(NSError **)errorPointer;
+- (void)logInteraction;
+- (void)logInteractionWithError:(NSError **)errorPointer;
+
+- (void)logShare;
+- (void)logShareWithError:(NSError **)errorPointer;
+
 
 @end

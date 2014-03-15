@@ -23,9 +23,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     // Create the sponsored image factory with tag code and publisher
-    _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"defaultplacement_mobile"];
+    _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"pinger_main_feed"];
     
-    UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 250)];
     [self.informationImage addSubview:imageHolder];
     // add tap recognizer to capture taps on the image
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -54,7 +54,7 @@
             
             // load the actual image from the remote location
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                UIImage *image = [_sponsoredImage getImageWithWidth:200 height:200];
+                UIImage *image = [_sponsoredImage getImage];
                 
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     // replace the image on the main thread
@@ -73,13 +73,13 @@
 - (IBAction)shareButtonPressed:(id)sender {
     NSLog(@"share button pressed");
     
-    [_sponsoredImage logEvent:@"share"];
+    [_sponsoredImage logShare];
     // do additional share logic below
 }
 - (IBAction)likeButtonPressed:(id)sender {
     NSLog(@"like button pressed");
     
-    [_sponsoredImage logEvent:@"like"];
+    [_sponsoredImage logInteraction];
     // do additional like logic below
 }
 

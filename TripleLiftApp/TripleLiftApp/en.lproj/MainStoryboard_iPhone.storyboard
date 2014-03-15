@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="center" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="mhb-Cb-ice">
-                                <rect key="frame" x="60" y="75" width="200" height="200"/>
+                                <rect key="frame" x="10" y="30" width="300" height="250"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fzm-lZ-BmB">
@@ -72,19 +72,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="mhb-Cb-ice" firstAttribute="top" secondItem="3" secondAttribute="top" constant="30" id="0XG-Uv-cKG"/>
                             <constraint firstItem="5DC-iO-ult" firstAttribute="trailing" secondItem="fzm-lZ-BmB" secondAttribute="trailing" type="default" id="3SW-tR-zKf"/>
+                            <constraint firstItem="mhb-Cb-ice" firstAttribute="centerX" secondItem="5DC-iO-ult" secondAttribute="centerX" type="default" id="8aJ-l5-s88"/>
                             <constraint firstAttribute="trailing" secondItem="5DC-iO-ult" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="BWB-aU-biq"/>
-                            <constraint firstItem="mhb-Cb-ice" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="60" id="DSJ-1H-wtM"/>
                             <constraint firstItem="5DC-iO-ult" firstAttribute="leading" secondItem="4mF-V7-Kgk" secondAttribute="leading" type="default" id="HU3-oF-h2f"/>
                             <constraint firstItem="GdZ-kE-Oku" firstAttribute="bottom" secondItem="fzm-lZ-BmB" secondAttribute="bottom" type="default" id="HfM-1F-nQe"/>
-                            <constraint firstAttribute="bottom" secondItem="mhb-Cb-ice" secondAttribute="bottom" constant="273" id="MFD-RD-0PS"/>
-                            <constraint firstItem="mhb-Cb-ice" firstAttribute="centerX" secondItem="5DC-iO-ult" secondAttribute="centerX" type="default" id="MMa-3t-OfP"/>
                             <constraint firstItem="5DC-iO-ult" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="QRz-PA-FEi"/>
                             <constraint firstItem="GdZ-kE-Oku" firstAttribute="centerX" secondItem="5DC-iO-ult" secondAttribute="centerX" type="default" id="SlK-qq-swC"/>
+                            <constraint firstAttribute="bottom" secondItem="mhb-Cb-ice" secondAttribute="bottom" constant="268" id="YSg-kB-gw6"/>
                             <constraint firstAttribute="bottom" secondItem="4mF-V7-Kgk" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="fzG-jf-hzB"/>
                             <constraint firstItem="GdZ-kE-Oku" firstAttribute="top" secondItem="4mF-V7-Kgk" secondAttribute="top" type="default" id="giV-JO-pdG"/>
-                            <constraint firstItem="mhb-Cb-ice" firstAttribute="top" secondItem="3" secondAttribute="top" constant="75" id="vRI-6v-qNl"/>
                             <constraint firstItem="fzm-lZ-BmB" firstAttribute="top" secondItem="5DC-iO-ult" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="vc8-Pg-dOL"/>
+                            <constraint firstItem="mhb-Cb-ice" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" id="xqv-h7-LkC"/>
                         </constraints>
                     </view>
                     <connections>

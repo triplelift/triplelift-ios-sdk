@@ -8,18 +8,14 @@
 
 #import "TripleLiftSponsoredImageFactory.h"
 
-static NSString *const AUCTION_ENDPOINT = @"http://ib.adnxs.com/ttj?inv_code=%@&member=1314";
-static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/advertiser/json/%@";
+static NSString *const IBP_ENDPOINT = @"http://ibp.3lift.com/ttj?inv_code=%@";
 
 @implementation TripleLiftSponsoredImageFactory {
     // private instance variables
     // api endpoints
-    NSString *_appNexusAuctionEndpoint;
-    NSString *_sponsoredImageEndpoint;
+    NSString *_ibp_endpoint;
     // the publisher
     NSString *_inventoryCode;
-    // array of image objects
-    NSArray *_sponsoredImages;
 }
 - (id)init {
     self = [super init];
@@ -28,7 +24,7 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
 - (id)initWithInventoryCode:(NSString *)inventoryCode{
     self = [super init];
     if(self) {
-        _appNexusAuctionEndpoint = [NSString stringWithFormat:AUCTION_ENDPOINT, inventoryCode];
+        _ibp_endpoint = [NSString stringWithFormat:IBP_ENDPOINT, inventoryCode];
         _inventoryCode = inventoryCode;
     }
         
@@ -39,20 +35,8 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
     return [self getSponsoredImageWithError:nil];
 }
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer {
-    // get creative code from auction endpoint
-    NSURLRequest *auctionRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_appNexusAuctionEndpoint]];
-    NSURLResponse *auctionResponse = nil;
-    NSData *auctionData = [NSURLConnection sendSynchronousRequest: auctionRequest returningResponse: &auctionResponse error: errorPointer];
-    if(auctionData == nil) {
-        return nil;
-    }
-    
-    NSString *creativeCode = [[NSString alloc] initWithData:auctionData encoding:NSUTF8StringEncoding];
-    
-    _sponsoredImageEndpoint = [NSString stringWithFormat:SPONSORED_IMAGE_ENDPOINT, creativeCode];
-    
     // get the sponsored image data
-    NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_sponsoredImageEndpoint]];
+    NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_ibp_endpoint]];
     NSURLResponse *sponsoredImageResponse = nil;
     NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest: sponsoredImageRequest returningResponse: &sponsoredImageResponse error: errorPointer];
     if(sponsoredImageData == nil) {
@@ -71,25 +55,10 @@ static NSString *const SPONSORED_IMAGE_ENDPOINT = @"http://dynamic.3lift.com/sc/
                                             code:-101
                                         userInfo:userInfo];
         return nil;
-    }
-    
-    _sponsoredImages = [returnedObject objectForKey:@"images"];
-    
-    if(_sponsoredImages) {
-        NSDictionary *imageDictionary = [_sponsoredImages objectAtIndex:arc4random_uniform([_sponsoredImages count])];
-        
-        TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:imageDictionary
-                                                                                      inventoryCode:_inventoryCode
-                                                                                 sponsoredContentID:creativeCode
+    } else {
+        TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject
                                                                                      mobilePlatform:@"ios"];
         return sponsoredImage;
-    } else {
-        NSString *domain = @"com.TripleLift.SponsoredImages.JSONFormatError";
-        NSString *description = @"Returned response missing image data";
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-        *errorPointer = [NSError errorWithDomain:domain
-                                            code:-101
-                                        userInfo:userInfo];
     }
     return nil;
 }

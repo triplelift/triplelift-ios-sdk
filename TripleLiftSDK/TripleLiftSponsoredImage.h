@@ -29,16 +29,9 @@
 - (UIImage *)getImageThumbnail;
 
 - (void)logImpression;
-- (void)logImpressionWithError:(NSError **)errorPointer;
-
 - (void)logClickthrough;
-- (void)logClickthroughWithError:(NSError **)errorPointer;
-
 - (void)logInteraction;
-- (void)logInteractionWithError:(NSError **)errorPointer;
-
 - (void)logShare;
-- (void)logShareWithError:(NSError **)errorPointer;
 
 
 @end

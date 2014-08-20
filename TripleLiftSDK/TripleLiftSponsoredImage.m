@@ -47,64 +47,43 @@
 }
 
 - (void)logImpression {
-    return [self logImpressionWithError:nil];
-}
-
-- (void)logImpressionWithError:(NSError **)errorPointer
-{
     NSEnumerator *enumerator = [_impressionPixels objectEnumerator];
     NSString *impressionURL;
     while(impressionURL = [enumerator nextObject]) {
-        [self makeGenericRequest:impressionURL error:errorPointer];
+        [self makeGenericRequest:impressionURL];
     }
     return;
 }
 
 - (void)logClickthrough
 {
-    return [self logClickthroughWithError:nil];
-}
-
-- (void)logClickthroughWithError:(NSError **)errorPointer
-{
     NSEnumerator *enumerator = [_clickthroughPixels objectEnumerator];
     NSString *clickthroughURL;
     while(clickthroughURL = [enumerator nextObject]) {
-        [self makeGenericRequest:clickthroughURL error:errorPointer];
+        [self makeGenericRequest:clickthroughURL];
     }
     return;
 }
 
 - (void)logInteraction
 {
-    return [self logInteractionWithError:nil];
-}
-
-- (void)logInteractionWithError:(NSError **)errorPointer
-{
     NSEnumerator *enumerator = [_interactionPixels objectEnumerator];
     NSString *interactionURL;
     while(interactionURL = [enumerator nextObject]) {
-        [self makeGenericRequest:interactionURL error:errorPointer];
+        [self makeGenericRequest:interactionURL];
     }
     return;
 }
 
 - (void)logShare
 {
-    return [self logShareWithError:nil];
-}
-
-- (void)logShareWithError:(NSError **)errorPointer
-{
     NSEnumerator *enumerator = [_sharePixels objectEnumerator];
     NSString *shareURL;
     while(shareURL = [enumerator nextObject]) {
-        [self makeGenericRequest:shareURL error:errorPointer];
+        [self makeGenericRequest:shareURL];
     }
     return;
 }
-
 
 #pragma mark - Private methods
 
@@ -118,7 +97,7 @@
     return [encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
-- (void)makeGenericRequest:(NSString *)url error:(NSError **)errorPointer
+- (void)makeGenericRequest:(NSString *)url
 {
     // properly escape the urls before requesting
     url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

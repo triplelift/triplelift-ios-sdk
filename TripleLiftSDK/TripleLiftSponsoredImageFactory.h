@@ -16,4 +16,6 @@
 - (TripleLiftSponsoredImage *)getSponsoredImage;
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer;
 
+@property (nonatomic, assign) BOOL testModeEnabled;
+
 @end

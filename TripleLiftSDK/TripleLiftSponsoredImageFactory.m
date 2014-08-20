@@ -51,7 +51,9 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
 {
     NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.ibpEndpoint]];
     NSURLResponse *sponsoredImageResponse = nil;
-    NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest: sponsoredImageRequest returningResponse: &sponsoredImageResponse error: errorPointer];
+    NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest:sponsoredImageRequest
+                                                       returningResponse:&sponsoredImageResponse
+                                                                   error:errorPointer];
     if(!sponsoredImageData) {
         return nil;
     }

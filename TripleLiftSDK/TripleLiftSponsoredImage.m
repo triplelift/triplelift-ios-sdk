@@ -11,21 +11,23 @@
 @implementation TripleLiftSponsoredImage {
 }
 
-- (id)initFromObject:(NSDictionary *)jsonObject mobilePlatform:(NSString *)platform{
+- (id)initFromObject:(NSDictionary *)serverInfo mobilePlatform:(NSString *)platform
+{
     self = [super init];
     
-    _advertiser_name = [jsonObject objectForKey:@"advertiser_name"];
-    _heading = [jsonObject objectForKey:@"heading"];
-    _caption = [jsonObject objectForKey:@"caption"];
-    _clickthroughLink = [jsonObject objectForKey:@"clickthrough_url"];
-    
-    _imageUrl = [jsonObject objectForKey:@"image_url"];
-    _imageThumbnailUrl = [jsonObject objectForKey:@"image_thumbnail_url"];
-    
-    _impressionPixels = [jsonObject objectForKey:@"impression_pixels"];
-    _clickthroughPixels = [jsonObject objectForKey:@"clickthrough_pixels"];
-    _interactionPixels = [jsonObject objectForKey:@"_interaction_pixels"];
-    _sharePixels = [jsonObject objectForKey:@"_share_pixels"];
+    if (self) {
+        _advertiser_name    = TPL_SAFE_STRING(serverInfo[@"advertiser_name"]);
+        _caption            = TPL_SAFE_STRING(serverInfo[@"caption"]);
+        _clickthroughLink   = TPL_SAFE_STRING(serverInfo[@"clickthrough_url"]);
+        _imageUrl           = TPL_SAFE_STRING(serverInfo[@"image_url"]);
+        _imageThumbnailUrl  = TPL_SAFE_STRING(serverInfo[@"image_thumbnail_url"]);
+        
+        _impressionPixels   = TPL_SAFE_CAST([NSArray class], serverInfo[@"impression_pixels"]);
+        _clickthroughPixels = TPL_SAFE_CAST([NSArray class], serverInfo[@"clickthrough_pixels"]);
+        _interactionPixels  = TPL_SAFE_CAST([NSArray class], serverInfo[@"interaction_pixels"]);
+        
+        _sharePixels = TPL_SAFE_CAST([NSDictionary class], serverInfo[@"share_pixels"]);
+    }
     
     return self;
 }
@@ -119,5 +121,17 @@
                                }
                            }];
 }
+
+#pragma mark - Helper functions
+
+id TPL_SAFE_CAST(Class klass, id obj) {
+    return [obj isKindOfClass:klass]? obj : nil;
+}
+
+id TPL_SAFE_STRING(id obj) {
+    return TPL_SAFE_CAST([NSString class], obj);
+}
+
+
 
 @end

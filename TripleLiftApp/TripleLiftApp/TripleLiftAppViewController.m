@@ -25,6 +25,7 @@
     // Create the sponsored image factory with tag code and publisher
     _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"pinger_main_feed"];
     
+    [_sponsoredImageFactory setTestModeEnabled:YES];
     UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 250)];
     [self.informationImage addSubview:imageHolder];
     // add tap recognizer to capture taps on the image

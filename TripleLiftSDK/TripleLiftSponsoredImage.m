@@ -9,9 +9,7 @@
 #import "TripleLiftSponsoredImage.h"
 
 @interface TripleLiftSponsoredImage ()
-
 @property (nonatomic) NSOperationQueue *queue;
-
 @end
 
 @implementation TripleLiftSponsoredImage

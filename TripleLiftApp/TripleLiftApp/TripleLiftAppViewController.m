@@ -74,7 +74,7 @@
 - (IBAction)shareButtonPressed:(id)sender {
     NSLog(@"share button pressed");
     
-    [_sponsoredImage logShare];
+    [_sponsoredImage logShare:@"facebook"];
     // do additional share logic below
 }
 - (IBAction)likeButtonPressed:(id)sender {

@@ -17,7 +17,7 @@
     _advertiser_name = [jsonObject objectForKey:@"advertiser_name"];
     _heading = [jsonObject objectForKey:@"heading"];
     _caption = [jsonObject objectForKey:@"caption"];
-    _clickthroughLink = [jsonObject objectForKey:@"clickthrough_link"];
+    _clickthroughLink = [jsonObject objectForKey:@"clickthrough_url"];
     
     _imageUrl = [jsonObject objectForKey:@"image_url"];
     _imageThumbnailUrl = [jsonObject objectForKey:@"image_thumbnail_url"];

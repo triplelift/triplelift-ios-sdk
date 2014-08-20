@@ -58,9 +58,7 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
         return nil;
     }
     
-    NSString *jsonString = [[[NSString alloc] initWithData:sponsoredImageData encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *returnedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:errorPointer];
+    NSDictionary *returnedObject = [NSJSONSerialization JSONObjectWithData:sponsoredImageData options:0 error:errorPointer];
     
         NSString *domain = @"com.TripleLift.SponsoredImages.JSONFormatError";
         NSString *description = @"Returned response improperly formatted";

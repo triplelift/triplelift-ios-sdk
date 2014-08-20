@@ -8,6 +8,12 @@
 
 #import "TripleLiftSponsoredImage.h"
 
+@interface TripleLiftSponsoredImage ()
+
+@property (nonatomic) NSOperationQueue *queue;
+
+@end
+
 @implementation TripleLiftSponsoredImage
 
 - (id)initFromObject:(NSDictionary *)serverInfo mobilePlatform:(NSString *)platform
@@ -25,6 +31,8 @@
         _interactionPixels  = TPL_SAFE_CAST([NSArray class], serverInfo[@"interaction_pixels"]);
         
         _sharePixels = TPL_SAFE_CAST([NSDictionary class], serverInfo[@"share_pixels"]);
+        
+        _queue = [[NSOperationQueue alloc] init];
     }
     
     return self;
@@ -103,8 +111,7 @@
     url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue
+    [NSURLConnection sendAsynchronousRequest:request queue:self.queue
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data,
                                                NSError *error) {

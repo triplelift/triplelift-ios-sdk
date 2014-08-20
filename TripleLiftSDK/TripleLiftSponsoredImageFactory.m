@@ -8,23 +8,33 @@
 
 #import "TripleLiftSponsoredImageFactory.h"
 
-static NSString *const IBP_ENDPOINT = @"http://ibp.3lift.com/ttj?inv_code=%@";
+static NSString *const IBP_ENDPOINT     = @"http://ibp.3lift.com/ttj?inv_code=%@";
 
-@implementation TripleLiftSponsoredImageFactory {
-    // private instance variables
-    // api endpoints
-    NSString *_ibp_endpoint;
-    // the publisher
-    NSString *_inventoryCode;
-}
+@interface TripleLiftSponsoredImageFactory ()
+
+// API endpoint
+@property (nonatomic, readonly) NSString *ibpEndpoint;
+
+// the TripleLift placement identification code
+@property (nonatomic) NSString *inventoryCode;
+
+@end
+
+@implementation TripleLiftSponsoredImageFactory
+
 - (id)initWithInventoryCode:(NSString *)inventoryCode{
     self = [super init];
-    if(self) {
-        _ibp_endpoint = [NSString stringWithFormat:IBP_ENDPOINT, inventoryCode];
+    if (self) {
         _inventoryCode = inventoryCode;
     }
-        
     return self;
+}
+
+- (NSString *)ibpEndpoint
+{
+    NSString *endpoint = [NSString stringWithFormat:IBP_ENDPOINT, self.inventoryCode];
+    
+    return endpoint;
 }
 
 - (TripleLiftSponsoredImage *)getSponsoredImage {
@@ -32,7 +42,7 @@ static NSString *const IBP_ENDPOINT = @"http://ibp.3lift.com/ttj?inv_code=%@";
 }
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer {
     // get the sponsored image data
-    NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_ibp_endpoint]];
+    NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.ibpEndpoint]];
     NSURLResponse *sponsoredImageResponse = nil;
     NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest: sponsoredImageRequest returningResponse: &sponsoredImageResponse error: errorPointer];
     if(sponsoredImageData == nil) {

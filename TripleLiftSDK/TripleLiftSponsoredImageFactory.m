@@ -52,7 +52,7 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
     NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.ibpEndpoint]];
     NSURLResponse *sponsoredImageResponse = nil;
     NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest: sponsoredImageRequest returningResponse: &sponsoredImageResponse error: errorPointer];
-    if(sponsoredImageData == nil) {
+    if(!sponsoredImageData) {
         return nil;
     }
     
@@ -60,13 +60,13 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *returnedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:errorPointer];
     
-    if(returnedObject == nil) {
         NSString *domain = @"com.TripleLift.SponsoredImages.JSONFormatError";
         NSString *description = @"Returned response improperly formatted";
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
         *errorPointer = [NSError errorWithDomain:domain
                                             code:-101
                                         userInfo:userInfo];
+    if(!returnedObject) {
         return nil;
     } else {
         TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject

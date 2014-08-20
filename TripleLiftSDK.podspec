@@ -21,7 +21,8 @@ Pod::Spec.new do |s|
   
   # Note: This Podspec is currently only be used internally at CardinalBlue
   s.source       = { :git => "https://github.com/cardinalblue/triplelift-ios-sdk.git", :tag => "0.0.2" }
-  
+  # s.source       = { :git => "https://github.com/triplelift/triplelift-ios-sdk.git", :tag => "0.0.2" }
+
   s.source_files  = "TripleLiftSDK/**/*.{h,m}"
   s.public_header_files = "TripleLiftSDK/**/*.h"
 

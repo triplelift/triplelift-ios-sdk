@@ -65,6 +65,14 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
     } else {
         TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject
                                                                                      mobilePlatform:@"ios"];
+        if (!sponsoredImage) {
+            NSString *domain = @"com.TripleLift.SponsoredImages.ObjectInitializationError";
+            NSString *description = @"There was a problem initializing the sponsored image.";
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+            *errorPointer = [NSError errorWithDomain:domain
+                                                code:-101
+                                            userInfo:userInfo];
+        }
         return sponsoredImage;
     }
     return nil;

@@ -28,9 +28,15 @@
         _clickthroughPixels = TPL_SAFE_CAST([NSArray class], serverInfo[@"clickthrough_pixels"]);
         _interactionPixels  = TPL_SAFE_CAST([NSArray class], serverInfo[@"interaction_pixels"]);
         
-        _sharePixels = TPL_SAFE_CAST([NSDictionary class], serverInfo[@"share_pixels"]);
+        _sharePixels        = TPL_SAFE_CAST([NSDictionary class], serverInfo[@"share_pixels"]);
         
         _queue = [[NSOperationQueue alloc] init];
+    }
+    
+    if (!_clickthroughLink ||
+        !_imageUrl ||
+        !_imageThumbnailUrl ){
+        return nil;
     }
     
     return self;

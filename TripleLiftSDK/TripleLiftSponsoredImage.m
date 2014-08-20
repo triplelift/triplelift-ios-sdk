@@ -107,8 +107,10 @@
                                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                                if ([httpResponse statusCode] == 200) {
                                } else {
-                                   if(error) {
+                                   if (error) {
                                        NSLog(@"Error encountered: %@",error.description);
+                                   } else {
+                                       NSLog(@"Error encountered: unknown HTTP error");
                                    }
                                }
                            }];

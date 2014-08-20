@@ -25,7 +25,8 @@
 @property (nonatomic, readonly) NSArray *interactionPixels;
 @property (nonatomic, readonly) NSDictionary *sharePixels;
 
-// I recommend using your own asynchronous image loading library
+// These load the images synchronously
+// It's recommended to use a third-party asynchronous image downloader
 - (UIImage *)getImage;
 - (UIImage *)getImageThumbnail;
 

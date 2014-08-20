@@ -23,7 +23,7 @@
 @property (nonatomic, readonly) NSArray *impressionPixels;
 @property (nonatomic, readonly) NSArray *clickthroughPixels;
 @property (nonatomic, readonly) NSArray *interactionPixels;
-@property (nonatomic, readonly) NSArray *sharePixels;
+@property (nonatomic, readonly) NSDictionary *sharePixels;
 
 - (UIImage *)getImage;
 - (UIImage *)getImageThumbnail;
@@ -31,7 +31,6 @@
 - (void)logImpression;
 - (void)logClickthrough;
 - (void)logInteraction;
-- (void)logShare;
-
+- (void)logShare:(NSString *)shareType;
 
 @end

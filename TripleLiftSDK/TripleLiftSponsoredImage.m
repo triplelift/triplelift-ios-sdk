@@ -74,14 +74,12 @@
     }
 }
 
-- (void)logShare
+- (void)logShare:(NSString *)shareType;
 {
-    NSEnumerator *enumerator = [_sharePixels objectEnumerator];
-    NSString *shareURL;
-    while(shareURL = [enumerator nextObject]) {
+    NSString *shareURL = self.sharePixels[shareType];
+    if (shareURL) {
         [self makeGenericRequest:shareURL];
     }
-    return;
 }
 
 #pragma mark - Private methods

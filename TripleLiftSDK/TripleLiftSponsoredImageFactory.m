@@ -42,11 +42,13 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
     return endpoint;
 }
 
-- (TripleLiftSponsoredImage *)getSponsoredImage {
+- (TripleLiftSponsoredImage *)getSponsoredImage
+{
     return [self getSponsoredImageWithError:nil];
 }
-- (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer {
-    // get the sponsored image data
+
+- (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer
+{
     NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.ibpEndpoint]];
     NSURLResponse *sponsoredImageResponse = nil;
     NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest: sponsoredImageRequest returningResponse: &sponsoredImageResponse error: errorPointer];

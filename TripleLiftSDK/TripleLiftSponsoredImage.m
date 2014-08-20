@@ -55,32 +55,23 @@
 }
 
 - (void)logImpression {
-    NSEnumerator *enumerator = [_impressionPixels objectEnumerator];
-    NSString *impressionURL;
-    while(impressionURL = [enumerator nextObject]) {
+    for (NSString *impressionURL in self.impressionPixels) {
         [self makeGenericRequest:impressionURL];
     }
-    return;
 }
 
 - (void)logClickthrough
 {
-    NSEnumerator *enumerator = [_clickthroughPixels objectEnumerator];
-    NSString *clickthroughURL;
-    while(clickthroughURL = [enumerator nextObject]) {
+    for (NSString *clickthroughURL in self.clickthroughPixels) {
         [self makeGenericRequest:clickthroughURL];
     }
-    return;
 }
 
 - (void)logInteraction
 {
-    NSEnumerator *enumerator = [_interactionPixels objectEnumerator];
-    NSString *interactionURL;
-    while(interactionURL = [enumerator nextObject]) {
+    for (NSString *interactionURL in self.interactionPixels) {
         [self makeGenericRequest:interactionURL];
     }
-    return;
 }
 
 - (void)logShare

@@ -60,12 +60,6 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
     
     NSDictionary *returnedObject = [NSJSONSerialization JSONObjectWithData:sponsoredImageData options:0 error:errorPointer];
     
-        NSString *domain = @"com.TripleLift.SponsoredImages.JSONFormatError";
-        NSString *description = @"Returned response improperly formatted";
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-        *errorPointer = [NSError errorWithDomain:domain
-                                            code:-101
-                                        userInfo:userInfo];
     if(!returnedObject) {
         return nil;
     } else {

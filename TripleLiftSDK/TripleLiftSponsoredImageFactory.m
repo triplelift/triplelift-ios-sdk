@@ -17,10 +17,6 @@ static NSString *const IBP_ENDPOINT = @"http://ibp.3lift.com/ttj?inv_code=%@";
     // the publisher
     NSString *_inventoryCode;
 }
-- (id)init {
-    self = [super init];
-    return self;
-}
 - (id)initWithInventoryCode:(NSString *)inventoryCode{
     self = [super init];
     if(self) {

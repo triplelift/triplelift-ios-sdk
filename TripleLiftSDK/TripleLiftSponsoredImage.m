@@ -82,16 +82,6 @@
 
 #pragma mark - Private methods
 
-- (NSString *)urlEncode:(NSString *)unencodedString
-{
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)unencodedString, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8));
-}
-
-- (NSString *)urlDecode:(NSString *)encodedString
-{
-    return [encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-}
-
 - (void)makeGenericRequest:(NSString *)url
 {
     // properly escape the urls before requesting

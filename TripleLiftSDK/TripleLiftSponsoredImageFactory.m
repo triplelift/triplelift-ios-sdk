@@ -50,7 +50,7 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer
 {
     NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.ibpEndpoint]];
-    NSURLResponse *sponsoredImageResponse = nil;
+    NSURLResponse *sponsoredImageResponse;
     NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest:sponsoredImageRequest
                                                        returningResponse:&sponsoredImageResponse
                                                                    error:errorPointer];
@@ -62,20 +62,20 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
     
     if(!returnedObject) {
         return nil;
-    } else {
-        TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject
-                                                                                     mobilePlatform:@"ios"];
-        if (!sponsoredImage) {
-            NSString *domain = @"com.TripleLift.SponsoredImages.ObjectInitializationError";
-            NSString *description = @"There was a problem initializing the sponsored image.";
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-            *errorPointer = [NSError errorWithDomain:domain
-                                                code:-101
-                                            userInfo:userInfo];
-        }
-        return sponsoredImage;
     }
-    return nil;
+    
+    TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject
+                                                                                 mobilePlatform:@"ios"];
+    if (!sponsoredImage) {
+        NSString *domain = @"com.TripleLift.SponsoredImages.ObjectInitializationError";
+        NSString *description = @"There was a problem initializing the sponsored image.";
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+        *errorPointer = [NSError errorWithDomain:domain
+                                            code:-101
+                                        userInfo:userInfo];
+    }
+    
+    return sponsoredImage;
 }
 
 @end

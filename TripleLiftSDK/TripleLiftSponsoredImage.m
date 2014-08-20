@@ -8,13 +8,11 @@
 
 #import "TripleLiftSponsoredImage.h"
 
-@implementation TripleLiftSponsoredImage {
-}
+@implementation TripleLiftSponsoredImage
 
 - (id)initFromObject:(NSDictionary *)serverInfo mobilePlatform:(NSString *)platform
 {
     self = [super init];
-    
     if (self) {
         _advertiser_name    = TPL_SAFE_STRING(serverInfo[@"advertiser_name"]);
         _caption            = TPL_SAFE_STRING(serverInfo[@"caption"]);
@@ -32,24 +30,28 @@
     return self;
 }
 
-- (UIImage *)getImage {
-    return [self doGetImage:_imageUrl];
+- (UIImage *)getImage
+{
+    return [self doGetImage:self.imageUrl];
 }
-- (UIImage *)getImageThumbnail {
-    return [self doGetImage:_imageThumbnailUrl];
+
+- (UIImage *)getImageThumbnail
+{
+    return [self doGetImage:self.imageThumbnailUrl];
 }
-- (UIImage *)doGetImage:(NSString *)imageUrl {
+
+- (UIImage *)doGetImage:(NSString *)imageUrl
+{
     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-    UIImage *image = [UIImage imageWithData:imageData];
-    
-    return image;
-    
+    return [UIImage imageWithData:imageData];
 }
 
 - (void)logImpression {
     return [self logImpressionWithError:nil];
 }
-- (void)logImpressionWithError:(NSError **)errorPointer {
+
+- (void)logImpressionWithError:(NSError **)errorPointer
+{
     NSEnumerator *enumerator = [_impressionPixels objectEnumerator];
     NSString *impressionURL;
     while(impressionURL = [enumerator nextObject]) {
@@ -58,10 +60,13 @@
     return;
 }
 
-- (void)logClickthrough {
+- (void)logClickthrough
+{
     return [self logClickthroughWithError:nil];
 }
-- (void)logClickthroughWithError:(NSError **)errorPointer {
+
+- (void)logClickthroughWithError:(NSError **)errorPointer
+{
     NSEnumerator *enumerator = [_clickthroughPixels objectEnumerator];
     NSString *clickthroughURL;
     while(clickthroughURL = [enumerator nextObject]) {
@@ -70,10 +75,13 @@
     return;
 }
 
-- (void)logInteraction {
+- (void)logInteraction
+{
     return [self logInteractionWithError:nil];
 }
-- (void)logInteractionWithError:(NSError **)errorPointer {
+
+- (void)logInteractionWithError:(NSError **)errorPointer
+{
     NSEnumerator *enumerator = [_interactionPixels objectEnumerator];
     NSString *interactionURL;
     while(interactionURL = [enumerator nextObject]) {
@@ -82,10 +90,13 @@
     return;
 }
 
-- (void)logShare {
+- (void)logShare
+{
     return [self logShareWithError:nil];
 }
-- (void)logShareWithError:(NSError **)errorPointer {
+
+- (void)logShareWithError:(NSError **)errorPointer
+{
     NSEnumerator *enumerator = [_sharePixels objectEnumerator];
     NSString *shareURL;
     while(shareURL = [enumerator nextObject]) {
@@ -95,14 +106,20 @@
 }
 
 
-// private functions
-- (NSString *)urlEncode:(NSString *)unencodedString {
+#pragma mark - Private methods
+
+- (NSString *)urlEncode:(NSString *)unencodedString
+{
     return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)unencodedString, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8));
 }
-- (NSString *)urlDecode:(NSString *)encodedString {
+
+- (NSString *)urlDecode:(NSString *)encodedString
+{
     return [encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
-- (void)makeGenericRequest:(NSString *)url error:(NSError **)errorPointer {
+
+- (void)makeGenericRequest:(NSString *)url error:(NSError **)errorPointer
+{
     // properly escape the urls before requesting
     url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -124,11 +141,13 @@
 
 #pragma mark - Helper functions
 
-id TPL_SAFE_CAST(Class klass, id obj) {
+id TPL_SAFE_CAST(Class klass, id obj)
+{
     return [obj isKindOfClass:klass]? obj : nil;
 }
 
-id TPL_SAFE_STRING(id obj) {
+id TPL_SAFE_STRING(id obj)
+{
     return TPL_SAFE_CAST([NSString class], obj);
 }
 

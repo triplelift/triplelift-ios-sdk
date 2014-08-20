@@ -12,18 +12,18 @@
 
 - (id)initFromObject:(NSDictionary *)jsonObject mobilePlatform:(NSString *)platform;
 
-@property (readonly, copy) NSString *advertiser_name;
-@property (readonly, copy) NSString *heading;
-@property (readonly, copy) NSString *caption;
-@property (readonly, copy) NSString *clickthroughLink;
+@property (nonatomic, readonly, copy) NSString *advertiser_name;
+@property (nonatomic, readonly, copy) NSString *heading;
+@property (nonatomic, readonly, copy) NSString *caption;
+@property (nonatomic, readonly, copy) NSString *clickthroughLink;
 
-@property (readonly, copy) NSString *imageUrl;
-@property (readonly, copy) NSString *imageThumbnailUrl;
+@property (nonatomic, readonly, copy) NSString *imageUrl;
+@property (nonatomic, readonly, copy) NSString *imageThumbnailUrl;
 
-@property (readonly, copy) NSArray *impressionPixels;
-@property (readonly, copy) NSArray *clickthroughPixels;
-@property (readonly, copy) NSArray *interactionPixels;
-@property (readonly, copy) NSArray *sharePixels;
+@property (nonatomic, readonly) NSArray *impressionPixels;
+@property (nonatomic, readonly) NSArray *clickthroughPixels;
+@property (nonatomic, readonly) NSArray *interactionPixels;
+@property (nonatomic, readonly) NSArray *sharePixels;
 
 - (UIImage *)getImage;
 - (UIImage *)getImageThumbnail;

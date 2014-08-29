@@ -10,6 +10,8 @@
 
 @interface TripleLiftSponsoredImage ()
 @property (nonatomic) NSOperationQueue *queue;
+@property (nonatomic) BOOL fireImpPixel;
+@property (nonatomic) BOOL fireClickPixel;
 @end
 
 @implementation TripleLiftSponsoredImage
@@ -29,6 +31,10 @@
         _interactionPixels  = TPL_SAFE_CAST([NSArray class], serverInfo[@"interaction_pixels"]);
         
         _sharePixels        = TPL_SAFE_CAST([NSDictionary class], serverInfo[@"share_pixels"]);
+        
+        // initialize the pixel fire flags
+        _fireImpPixel      = true;
+        _fireClickPixel    = true;
         
         _queue = [[NSOperationQueue alloc] init];
     }
@@ -59,15 +65,21 @@
 }
 
 - (void)logImpression {
-    for (NSString *impressionURL in self.impressionPixels) {
-        [self makeGenericRequest:impressionURL];
+    if(self.fireImpPixel) {
+        for (NSString *impressionURL in self.impressionPixels) {
+            [self makeGenericRequest:impressionURL];
+        }
+        self.fireImpPixel = false;
     }
 }
 
 - (void)logClickthrough
 {
-    for (NSString *clickthroughURL in self.clickthroughPixels) {
-        [self makeGenericRequest:clickthroughURL];
+    if(self.fireClickPixel) {
+        for (NSString *clickthroughURL in self.clickthroughPixels) {
+            [self makeGenericRequest:clickthroughURL];
+        }
+        self.fireClickPixel = false;
     }
 }
 

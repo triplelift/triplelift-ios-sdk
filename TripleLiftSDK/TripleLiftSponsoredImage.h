@@ -12,33 +12,27 @@
 
 - (id)initFromObject:(NSDictionary *)jsonObject mobilePlatform:(NSString *)platform;
 
-@property (readonly, copy) NSString *advertiser_name;
-@property (readonly, copy) NSString *heading;
-@property (readonly, copy) NSString *caption;
-@property (readonly, copy) NSString *clickthroughLink;
+@property (nonatomic, readonly, copy) NSString *advertiser_name;
+@property (nonatomic, readonly, copy) NSString *heading;
+@property (nonatomic, readonly, copy) NSString *caption;
+@property (nonatomic, readonly, copy) NSString *clickthroughLink;
 
-@property (readonly, copy) NSString *imageUrl;
-@property (readonly, copy) NSString *imageThumbnailUrl;
+@property (nonatomic, readonly, copy) NSString *imageUrl;
+@property (nonatomic, readonly, copy) NSString *imageThumbnailUrl;
 
-@property (readonly, copy) NSArray *impressionPixels;
-@property (readonly, copy) NSArray *clickthroughPixels;
-@property (readonly, copy) NSArray *interactionPixels;
-@property (readonly, copy) NSArray *sharePixels;
+@property (nonatomic, readonly) NSArray *impressionPixels;
+@property (nonatomic, readonly) NSArray *clickthroughPixels;
+@property (nonatomic, readonly) NSArray *interactionPixels;
+@property (nonatomic, readonly) NSDictionary *sharePixels;
 
+// These load the images synchronously
+// It's recommended to use a third-party asynchronous image downloader
 - (UIImage *)getImage;
 - (UIImage *)getImageThumbnail;
 
 - (void)logImpression;
-- (void)logImpressionWithError:(NSError **)errorPointer;
-
 - (void)logClickthrough;
-- (void)logClickthroughWithError:(NSError **)errorPointer;
-
 - (void)logInteraction;
-- (void)logInteractionWithError:(NSError **)errorPointer;
-
-- (void)logShare;
-- (void)logShareWithError:(NSError **)errorPointer;
-
+- (void)logShare:(NSString *)shareType;
 
 @end

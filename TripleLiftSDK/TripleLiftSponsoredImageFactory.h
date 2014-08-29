@@ -13,7 +13,11 @@
 
 - (id)initWithInventoryCode:(NSString *)inventoryCode;
 
+// This method contains a synchronous network request, and
+// should be run asynchronously in a background queue.
 - (TripleLiftSponsoredImage *)getSponsoredImage;
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer;
+
+@property (nonatomic, assign) BOOL testModeEnabled;
 
 @end

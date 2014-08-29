@@ -18,6 +18,6 @@
 - (TripleLiftSponsoredImage *)getSponsoredImage;
 - (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer;
 
-@property (nonatomic, assign) BOOL testModeEnabled;
+@property (nonatomic, assign) NSDictionary *impressionBusParameters;
 
 @end

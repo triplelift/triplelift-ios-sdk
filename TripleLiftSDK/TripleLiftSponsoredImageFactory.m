@@ -9,7 +9,6 @@
 #import "TripleLiftSponsoredImageFactory.h"
 
 static NSString *const IBP_ENDPOINT     = @"http://ibp.3lift.com/ttj?inv_code=%@";
-static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
 
 @interface TripleLiftSponsoredImageFactory ()
 
@@ -35,9 +34,14 @@ static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
 {
     NSString *endpoint = [NSString stringWithFormat:IBP_ENDPOINT, self.inventoryCode];
     
-    if (self.testModeEnabled) {
-        endpoint = [NSString stringWithFormat:@"%@%@",endpoint,IBP_TEST_SUFFIX];
+    NSLog(@"former endpoint: %@", endpoint);
+    if (self.impressionBusParameters.count > 0) {
+        for(NSString *key in [self.impressionBusParameters allKeys]) {
+            NSString *value = [self.impressionBusParameters objectForKey:(key)];
+            endpoint = [NSString stringWithFormat:@"%@&%@=%@",endpoint,key,value];
+        }
     }
+    NSLog(@"new endpoint: %@", endpoint);
     
     return endpoint;
 }

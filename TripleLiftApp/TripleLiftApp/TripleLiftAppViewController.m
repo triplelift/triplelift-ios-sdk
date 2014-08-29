@@ -25,7 +25,10 @@
     // Create the sponsored image factory with tag code and publisher
     _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"500px_main"];
     
-    [_sponsoredImageFactory setTestModeEnabled:YES];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"true",@"test", nil];
+    
+    [_sponsoredImageFactory setImpressionBusParameters:params];
+    
     UIImageView *imageHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 250)];
     [self.informationImage addSubview:imageHolder];
     // add tap recognizer to capture taps on the image

@@ -8,59 +8,74 @@
 
 #import "TripleLiftSponsoredImageFactory.h"
 
-static NSString *const IBP_ENDPOINT = @"http://ibp.3lift.com/ttj?inv_code=%@";
+static NSString *const IBP_ENDPOINT     = @"http://ibp.3lift.com/ttj?inv_code=%@";
+static NSString *const IBP_TEST_SUFFIX  = @"&test=true";
 
-@implementation TripleLiftSponsoredImageFactory {
-    // private instance variables
-    // api endpoints
-    NSString *_ibp_endpoint;
-    // the publisher
-    NSString *_inventoryCode;
-}
-- (id)init {
-    self = [super init];
-    return self;
-}
+@interface TripleLiftSponsoredImageFactory ()
+
+// API endpoint
+@property (nonatomic, readonly) NSString *ibpEndpoint;
+
+// the TripleLift placement identification code
+@property (nonatomic) NSString *inventoryCode;
+
+@end
+
+@implementation TripleLiftSponsoredImageFactory
+
 - (id)initWithInventoryCode:(NSString *)inventoryCode{
     self = [super init];
-    if(self) {
-        _ibp_endpoint = [NSString stringWithFormat:IBP_ENDPOINT, inventoryCode];
+    if (self) {
         _inventoryCode = inventoryCode;
     }
-        
     return self;
 }
 
-- (TripleLiftSponsoredImage *)getSponsoredImage {
+- (NSString *)ibpEndpoint
+{
+    NSString *endpoint = [NSString stringWithFormat:IBP_ENDPOINT, self.inventoryCode];
+    
+    if (self.testModeEnabled) {
+        endpoint = [NSString stringWithFormat:@"%@%@",endpoint,IBP_TEST_SUFFIX];
+    }
+    
+    return endpoint;
+}
+
+- (TripleLiftSponsoredImage *)getSponsoredImage
+{
     return [self getSponsoredImageWithError:nil];
 }
-- (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer {
-    // get the sponsored image data
-    NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:_ibp_endpoint]];
-    NSURLResponse *sponsoredImageResponse = nil;
-    NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest: sponsoredImageRequest returningResponse: &sponsoredImageResponse error: errorPointer];
-    if(sponsoredImageData == nil) {
+
+- (TripleLiftSponsoredImage *)getSponsoredImageWithError:(NSError **)errorPointer
+{
+    NSURLRequest *sponsoredImageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.ibpEndpoint]];
+    NSURLResponse *sponsoredImageResponse;
+    NSData *sponsoredImageData = [NSURLConnection sendSynchronousRequest:sponsoredImageRequest
+                                                       returningResponse:&sponsoredImageResponse
+                                                                   error:errorPointer];
+    if(!sponsoredImageData) {
         return nil;
     }
     
-    NSString *jsonString = [[[NSString alloc] initWithData:sponsoredImageData encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *returnedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:errorPointer];
+    NSDictionary *returnedObject = [NSJSONSerialization JSONObjectWithData:sponsoredImageData options:0 error:errorPointer];
     
-    if(returnedObject == nil) {
-        NSString *domain = @"com.TripleLift.SponsoredImages.JSONFormatError";
-        NSString *description = @"Returned response improperly formatted";
+    if(!returnedObject) {
+        return nil;
+    }
+    
+    TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject
+                                                                                 mobilePlatform:@"ios"];
+    if (!sponsoredImage) {
+        NSString *domain = @"com.TripleLift.SponsoredImages.ObjectInitializationError";
+        NSString *description = @"There was a problem initializing the sponsored image.";
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
         *errorPointer = [NSError errorWithDomain:domain
                                             code:-101
                                         userInfo:userInfo];
-        return nil;
-    } else {
-        TripleLiftSponsoredImage *sponsoredImage = [[TripleLiftSponsoredImage alloc] initFromObject:returnedObject
-                                                                                     mobilePlatform:@"ios"];
-        return sponsoredImage;
     }
-    return nil;
+    
+    return sponsoredImage;
 }
 
 @end

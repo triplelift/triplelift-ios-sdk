@@ -34,14 +34,12 @@ static NSString *const IBP_ENDPOINT     = @"http://ibp.3lift.com/ttj?inv_code=%@
 {
     NSString *endpoint = [NSString stringWithFormat:IBP_ENDPOINT, self.inventoryCode];
     
-    NSLog(@"former endpoint: %@", endpoint);
     if (self.impressionBusParameters.count > 0) {
         for(NSString *key in [self.impressionBusParameters allKeys]) {
             NSString *value = [self.impressionBusParameters objectForKey:(key)];
             endpoint = [NSString stringWithFormat:@"%@&%@=%@",endpoint,key,value];
         }
     }
-    NSLog(@"new endpoint: %@", endpoint);
     
     return endpoint;
 }

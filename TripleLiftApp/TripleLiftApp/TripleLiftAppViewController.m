@@ -25,7 +25,7 @@
     // Create the sponsored image factory with tag code and publisher
     _sponsoredImageFactory = [[TripleLiftSponsoredImageFactory alloc] initWithInventoryCode:@"500px_main"];
     
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"true",@"test", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"true",@"test",@"testapp",@"appid", nil];
     
     [_sponsoredImageFactory setImpressionBusParameters:params];
     

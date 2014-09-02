@@ -37,7 +37,10 @@ static NSString *const IBP_ENDPOINT     = @"http://ibp.3lift.com/ttj?inv_code=%@
     if (self.impressionBusParameters.count > 0) {
         for(NSString *key in [self.impressionBusParameters allKeys]) {
             NSString *value = [self.impressionBusParameters objectForKey:(key)];
-            endpoint = [NSString stringWithFormat:@"%@&%@=%@",endpoint,key,value];
+            endpoint = [NSString stringWithFormat:@"%@&%@=%@",
+                        endpoint,
+                        [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                        [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         }
     }
     
